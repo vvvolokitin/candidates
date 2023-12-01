@@ -28,5 +28,28 @@ def page_main() -> str:
     return str_candidates
 
 
+@app.route('/candidate/<int:candidate_id>')
+def page_candidate(candidate_id) -> str:
+    """
+    Возвращает страницу кандидата.
+
+    Вывод информации о кандидате по его id.
+
+    Возвращаемое значение:
+            result_candidate (str): Информация о кандидатe.
+    """
+    result_candidate: str = 'Кандидата с таким id нет'
+    candidates: list[dict] = loading_candidates()
+    for candidate in candidates:
+        if candidate['id'] == candidate_id:
+            result_candidate = (
+                f'<img src="{candidate["picture"]}"<br>'
+                f'<pre><br>Имя: {candidate["name"]}'
+                f'<br>Позиция: {candidate["position"]}'
+                f'<br>Навыки: {candidate["skills"]}</pre>'
+            )
+    return result_candidate
+
+
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True, port=8000)
