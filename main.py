@@ -5,6 +5,8 @@ from utils import loading_candidates
 
 app = Flask(__name__)
 
+candidates: list[dict] = loading_candidates()
+
 
 @app.route('/')
 def page_main() -> str:
@@ -16,13 +18,12 @@ def page_main() -> str:
     Возвращаемое значение:
             str_candidates (str): Информация о всех кандидатах.
     """
-    candidates: list[dict] = loading_candidates()
     str_candidates: str = '<pre>'
     for candidate in candidates:
         str_candidates += (
-            f'Имя: {candidate["name"]}\n'
-            f'Позиция: {candidate["position"]}\n'
-            f'Навыки: {candidate["skills"]}\n\n'
+            f'<br>Имя: {candidate["name"]}'
+            f'<br>Позиция: {candidate["position"]}'
+            f'<br>Навыки: {candidate["skills"]}<br>'
         )
     str_candidates += '</pre>'
     return str_candidates
@@ -39,7 +40,6 @@ def page_candidate(candidate_id: int) -> str:
             result_candidate (str): Информация о кандидатe.
     """
     result_candidate: str = 'Кандидата с таким id нет'
-    candidates: list[dict] = loading_candidates()
     for candidate in candidates:
         if candidate['id'] == candidate_id:
             result_candidate = (
@@ -61,7 +61,6 @@ def page_skill(skill: str):
     Возвращаемое значение:
             str_candidates (str): Информация о кандидатах.
     """
-    candidates: list[dict] = loading_candidates()
     str_candidates: str = '<pre>'
     for candidate in candidates:
         if skill in [sk.lower() for sk in candidate['skills'].split(', ')]:
@@ -75,4 +74,4 @@ def page_skill(skill: str):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8000)
+    app.run(debug=False, port=8000)
